@@ -1,0 +1,52 @@
+const ROLES = {
+  OWNER: "owner",
+  MANAGER: "manager",
+  CASHIER: "cashier",
+  STOREKEEPER: "storekeeper",
+};
+
+const ASSIGNABLE_ROLES = {
+  [ROLES.OWNER]: [
+    ROLES.MANAGER,
+    ROLES.CASHIER,
+    ROLES.STOREKEEPER,
+  ],
+
+  [ROLES.MANAGER]: [
+    ROLES.CASHIER,
+    ROLES.STOREKEEPER,
+  ],
+
+  [ROLES.CASHIER]: [],
+  [ROLES.STOREKEEPER]: [],
+};
+
+// Who each role is allowed to reset
+const PASSWORD_RESET_ROLES = {
+  [ROLES.OWNER]: [
+    ROLES.OWNER,
+    ROLES.MANAGER,
+    ROLES.CASHIER,
+    ROLES.STOREKEEPER,
+  ],
+
+  [ROLES.MANAGER]: [
+    ROLES.MANAGER,
+    ROLES.CASHIER,
+    ROLES.STOREKEEPER,
+  ],
+
+  [ROLES.CASHIER]: [
+    ROLES.CASHIER,
+  ],
+
+  [ROLES.STOREKEEPER]: [
+    ROLES.STOREKEEPER,
+  ],
+};
+
+module.exports = {
+  ROLES,
+  ASSIGNABLE_ROLES,
+  PASSWORD_RESET_ROLES,
+};
