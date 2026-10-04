@@ -1,10 +1,12 @@
+const jwt = require("jsonwebtoken");
 const User = require("../models/user-model");
 
 async function me(req, res) {
+  
 
     try{
         if(!req.user) return res.status(401).json({message: "User must register or login"});
-        const user = await User.findById(req.user._id).selelct("-password");
+        const user = await User.findById(req.user._id).select("-password");
         res.status(200).json({
             message: "User Authenticated",
             user
@@ -15,10 +17,10 @@ async function me(req, res) {
         res.status(400).json({ message: error.message });
     }
 
-    
 }
 
-async function login() {
+async function login(req, res) {
+
   try {
     const user = await User.findOne({ email: req.body.email });
 
