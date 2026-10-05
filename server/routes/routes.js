@@ -4,6 +4,7 @@ const appSetupRouter = require("./app-setup");
 const authRoutes = require("./auth-routes");
 const userRoutes = require("./user-routes");
 const categoryRoutes = require("./category-routes");
+const menuItemRoutes = require("./menu-item-routes");
   
 // route without any authentication
 router.use("/app-setup", appSetupRouter);
@@ -13,6 +14,7 @@ router.use("/auth", authRoutes);
 router.use(verifyAuthentication);
 router.use("/users", userRoutes);
 router.use("/categories", categoryRoutes);
+router.use("/menu-items", menuItemRoutes);
 
 
 module.exports = router;
