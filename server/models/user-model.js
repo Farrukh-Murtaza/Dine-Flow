@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const { roleValues } = require("../constants/roles");
 
 const userSchema = mongoose.Schema({
   username: {
@@ -23,7 +24,7 @@ const userSchema = mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["owner", "manager", "cashier", "store keeper"],
+    enum: roleValues,
     required: [true, "Role is required."],
   },
   isActive: {
