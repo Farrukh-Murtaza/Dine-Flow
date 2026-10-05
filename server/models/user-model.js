@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, "Email is required."],
     unique: true,
-    match: [/.+@.+\..+/, "Please provide a valid email addres."],
+    match: [/.+@.+\..+/, "Please provide a valid email address."],
   },
   password: {
     type: String,
@@ -25,6 +25,11 @@ const userSchema = mongoose.Schema({
     type: String,
     enum: ["owner", "manager", "cashier", "store keeper"],
     required: [true, "Role is required."],
+  },
+  isActive: {
+    type: Boolean,
+    default: true, // New users are active by default
+    required: true,
   }
 }, {
   timestamps: true
