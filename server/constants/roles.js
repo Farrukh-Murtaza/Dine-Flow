@@ -45,8 +45,11 @@ const PASSWORD_RESET_ROLES = {
   ],
 };
 
+
+const roleValues = Object.values(ROLES);
 module.exports = {
   ROLES,
   ASSIGNABLE_ROLES,
   PASSWORD_RESET_ROLES,
+  roleValues
 };
