@@ -1,7 +1,8 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const User = require("../models/user-model");
 
-function verifyAuthentication(req, res, next) {
+async function verifyAuthentication(req, res, next) {
     try {
         let token = req.headers.authorization;
 
@@ -11,6 +12,18 @@ function verifyAuthentication(req, res, next) {
 
         token = token.split(" ")[1];
         const decodedPayload = jwt.verify(token, process.env.JWT_SECRET);
+        
+        // Fetch the LATEST user data from the database for user isActive status
+          const user = await User.findById(decodedPayload.id);
+        if (!user) {
+            return res.status(401).json({ message: "User no longer exists." });
+        }
+
+        // 2. Enforce the isActive check in real-time
+        if (!user.isActive) {
+            return res.status(403).json({ message: "Your account has been deactivated." });
+        }
+
         req.user = decodedPayload;
 
         next();
