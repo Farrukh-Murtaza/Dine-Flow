@@ -28,6 +28,11 @@ async function login(req, res) {
       return res.status(400).json({ message: "Incorrect email or password."} );
     }
 
+    // look for active status user
+    if (!user.isActive) {
+      return res.status(403).json({ message: "Your account has been deactivated. Please contact support." });
+    }
+
     const correctPw = await user.isCorrectPassword(req.body.password);
 
     if (!correctPw) {

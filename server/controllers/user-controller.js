@@ -166,8 +166,47 @@ async function resetPassword(req, res) {
   }
 }
 
+async function toggleStatus(req, res){
+    const actorRole = req.user.role; // The person making the request
+    const actorId = req.user._id.toString(); // The person's ID making the request
+    const targetUserId = req.params.id;
+    const { isActive } = req.body;
+
+    if (typeof isActive !== "boolean") {
+      return res.status(400).json({ message: "Bad Request. 'isActive' must be a boolean (true or false)." });
+    }
+
+
+    // Self-Protection Check: Prevent an owner (or anyone) from deactivating themselves
+    if (actorId === targetUserId) {
+      return res.status(400).json({ message: "Bad Request. You cannot deactivate your own account." });
+    }
+
+    const targetUser = await User.findById(targetUserId);
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    if (actorRole === "manager" && targetUser.role === "owner") {
+      return res.status(403).json({ message: "Forbidden. Managers cannot deactivate an owner's account." });
+    }
+
+    targetUser.isActive = isActive;
+    await targetUser.save(); 
+
+    const updatedUser = targetUser.toObject();
+    delete updatedUser.password;
+
+    const actionText = isActive ? "activated" : "deactivated";
+    res.status(200).json({ 
+      message: `User '${updatedUser.username}' has been ${actionText} successfully.`, 
+      user: updatedUser 
+    });
+}
+
 module.exports = {
     getAllUsers,
     createStaffUser,
-    resetPassword
+    resetPassword,
+    toggleStatus
 }
