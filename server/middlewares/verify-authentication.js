@@ -14,7 +14,7 @@ async function verifyAuthentication(req, res, next) {
         const decodedPayload = jwt.verify(token, process.env.JWT_SECRET);
         
         // Fetch the LATEST user data from the database for user isActive status
-          const user = await User.findById(decodedPayload.id);
+          const user = await User.findById(decodedPayload._id);
         if (!user) {
             return res.status(401).json({ message: "User no longer exists." });
         }
