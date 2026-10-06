@@ -1,1 +1,177 @@
 @import "tailwindcss";
+
+/* =========================================================
+   DINEFLOW THEME
+   ========================================================= */
+
+:root {
+    /* Brand */
+    --df-primary: #1f3a5f;
+    --df-primary-hover: #294d78;
+    --df-primary-foreground: #ffffff;
+
+    /* Backgrounds */
+    --df-background: #f8fafc;
+    --df-surface: #ffffff;
+    --df-surface-muted: #f1f5f9;
+
+    /* Text */
+    --df-foreground: #0f172a;
+    --df-muted-foreground: #64748b;
+
+    /* Borders */
+    --df-border: #e2e8f0;
+    --df-input: #cbd5e1;
+
+    /* Sidebar */
+    --df-sidebar: #1f3a5f;
+    --df-sidebar-foreground: #ffffff;
+    --df-sidebar-muted: #bfdbfe;
+
+    /* Status */
+    --df-success: #059669;
+    --df-success-bg: #d1fae5;
+
+    --df-warning: #d97706;
+    --df-warning-bg: #fef3c7;
+
+    --df-danger: #dc2626;
+    --df-danger-bg: #fee2e2;
+
+    --df-info: #2563eb;
+    --df-info-bg: #dbeafe;
+
+    /* Radius */
+    --df-radius: 0.75rem;
+}
+
+/* =========================================================
+   DARK THEME
+   ========================================================= */
+
+.dark {
+    /* Brand */
+    --df-primary: #6ea8dc;
+    --df-primary-hover: #8bbce8;
+    --df-primary-foreground: #0f172a;
+
+    /* Backgrounds */
+    --df-background: #0f172a;
+    --df-surface: #172033;
+    --df-surface-muted: #1e293b;
+
+    /* Text */
+    --df-foreground: #f1f5f9;
+    --df-muted-foreground: #94a3b8;
+
+    /* Borders */
+    --df-border: #334155;
+    --df-input: #475569;
+
+    /* Sidebar */
+    --df-sidebar: #0b1628;
+    --df-sidebar-foreground: #f8fafc;
+    --df-sidebar-muted: #93c5fd;
+
+    /* Status */
+    --df-success: #34d399;
+    --df-success-bg: #064e3b;
+
+    --df-warning: #fbbf24;
+    --df-warning-bg: #78350f;
+
+    --df-danger: #f87171;
+    --df-danger-bg: #7f1d1d;
+
+    --df-info: #60a5fa;
+    --df-info-bg: #1e3a8a;
+}
+
+/* =========================================================
+   TAILWIND THEME TOKENS
+   ========================================================= */
+
+@theme {
+    --color-primary: var(--df-primary);
+    --color-primary-hover: var(--df-primary-hover);
+    --color-primary-foreground: var(--df-primary-foreground);
+
+    --color-background: var(--df-background);
+    --color-surface: var(--df-surface);
+    --color-surface-muted: var(--df-surface-muted);
+
+    --color-foreground: var(--df-foreground);
+    --color-muted-foreground: var(--df-muted-foreground);
+
+    --color-border: var(--df-border);
+    --color-input: var(--df-input);
+
+    --color-sidebar: var(--df-sidebar);
+    --color-sidebar-foreground: var(--df-sidebar-foreground);
+    --color-sidebar-muted: var(--df-sidebar-muted);
+
+    --color-success: var(--df-success);
+    --color-success-bg: var(--df-success-bg);
+
+    --color-warning: var(--df-warning);
+    --color-warning-bg: var(--df-warning-bg);
+
+    --color-danger: var(--df-danger);
+    --color-danger-bg: var(--df-danger-bg);
+
+    --color-info: var(--df-info);
+    --color-info-bg: var(--df-info-bg);
+
+    --radius-dineflow: var(--df-radius);
+
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* =========================================================
+   BASE + SHARED COMPONENT CLASSES
+   ========================================================= */
+
+@layer base {
+
+    /* Tailwind v4 defaults borders to currentColor; use the theme border */
+    *,
+    ::before,
+    ::after {
+        border-color: var(--color-border);
+    }
+
+    html.dark {
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-background text-foreground font-sans antialiased;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: var(--color-muted-foreground);
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-dineflow px-4 py-2.5 text-sm font-semibold transition bg-primary text-primary-foreground hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50;
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center justify-center gap-2 rounded-dineflow px-4 py-2.5 text-sm font-semibold transition border border-border bg-surface text-foreground hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-50;
+    }
+
+    .btn-link {
+        @apply text-sm font-semibold text-primary hover:text-primary-hover disabled:cursor-not-allowed disabled:text-muted-foreground/50;
+    }
+
+    .input {
+        @apply w-full rounded-dineflow border border-input bg-surface px-4 py-2.5 text-sm text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30;
+    }
+
+    .label {
+        @apply mb-2 block text-sm font-medium text-foreground;
+    }
+}
