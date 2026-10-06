@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { Utensils } from "lucide-react";
-import { authApi } from "../api/auth";
+import { Eye, EyeOff, Utensils } from "lucide-react";
 import { getErrorMessage } from "../api/client";
+import { useLocation, useNavigate } from "react-router-dom";
+import { homePathFor } from "../config/navigation";
+import { useAuth } from "../context/auth-context/useAuth";
 
 
 export default function LoginScreen() {
-    const [formData, setFormData] = useState({ email: "manager@dineflow.com", password: "asdf112" });
-
+    const { login } = useAuth();
+    const [formData, setFormData] = useState({ email: "", password: "" });
+    const navigate = useNavigate();
+    const location = useLocation();
     const [error, setError] = useState("");
     const [submitting, setSubmitting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -27,8 +32,9 @@ export default function LoginScreen() {
 
         try {
             console.log(formData)
-            const signedIn = await authApi.login(formData);
-            console.log(signedIn);
+            const signedIn = await login(formData.email, formData.password);
+            const from = location.state?.from?.pathname;
+            navigate(from && from !== "/login" ? from : homePathFor(signedIn.role), { replace: true });
 
         } catch (err) {
             setError(getErrorMessage(err, "Unable to sign in"));
@@ -82,15 +88,28 @@ export default function LoginScreen() {
                     />
 
                     <label className="label">Password</label>
-                    <input
-                        type="password"
-                        required
-                        name="password"
-                        autoComplete="current-password"
-                        className="input mb-6"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
+                    <div className="relative w-full">
+                        <input
+                            type={showPassword ? "text" : "password"} // 👈 Toggles type
+                            required
+                            name="password"
+                            autoComplete="current-password"
+                            className="input mb-6 pr-10 w-full" // 👈 Add padding-right so text doesn't overlap the icon
+                            value={formData.password}
+                            onChange={handleChange}
+                        />
+                        <button
+                            type="button" // 👈 Explicitly set to button so it doesn't accidentally submit forms
+                            className="absolute right-3 top-3.5 text-gray-500 hover:text-gray-700 focus:outline-none"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? (
+                                <EyeOff className="h-5 w-5" />
+                            ) : (
+                                <Eye className="h-5 w-5" />
+                            )}
+                        </button>
+                    </div>
 
                     {error && <p className="mb-4 text-sm text-danger">{error}</p>}
 

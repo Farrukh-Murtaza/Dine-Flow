@@ -43,7 +43,10 @@ async function login(req, res) {
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    res.status(200).json({ message: "User logged in successfully!", token });
+    const userResponse = user.toObject();
+    delete userResponse.password;
+
+    res.status(200).json({ message: "User logged in successfully!", token, user : userResponse });
   } catch(error) {
     console.error(error);
     res.status(400).json({ message: error.message });

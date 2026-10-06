@@ -1,12 +1,7 @@
-import client from "./client";
-
-interface credientialProperty {
-    email: string,
-    password: string
-}
-
+import type { LoginResponse, User } from "../models";
+import { http } from "./client";
 
 export const authApi = {
-    login: (credentials: credientialProperty) => client.post("/auth/login", credentials), // -> { token, message }
-    me: () => client.get("/auth/me"), // -> user
+    login: (credentials: { email: string, password: string }) => http.post<LoginResponse>("/auth/login", credentials), // -> { token, message }
+    me: () => http.get<User>("/auth/me"), // -> user
 };

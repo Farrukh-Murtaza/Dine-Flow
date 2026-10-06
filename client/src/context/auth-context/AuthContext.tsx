@@ -1,15 +1,10 @@
 import { createContext } from "react";
-
-export interface User {
-    username: string;
-    email: string;
-    role: string,
-    isActive: boolean
-}
+import type { User } from "../../models";
 
 export interface AuthContextType {
     user: User | null;
-    login: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<User>;
+    loading: boolean,
     logout: () => void;
 }
 
