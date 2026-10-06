@@ -40,7 +40,7 @@ export default function AppLayout() {
                     </div>
                 </header>
 
-                <div className="p-5 md:p-8 max-w-[1500px] mx-auto">
+                <div className="p-5 md:p-8 max-w-375 mx-auto">
                     <Outlet />
                 </div>
             </main>
