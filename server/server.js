@@ -10,7 +10,12 @@ const URL = process.env.URL ;
 const PORT = process.env.PORT || 5000;
 const routes = require("./routes/routes");
 
-app.use(cors());
+const corsOptions = {
+  origin: process.env.CLIENT_URL,
+  optionsSuccessStatus: 200 
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("dev"));
 
