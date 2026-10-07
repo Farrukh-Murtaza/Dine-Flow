@@ -213,7 +213,7 @@ export default function AppLayout() {
             top-0
             z-20
             flex
-            h-20
+            h-21.25
             items-center
             border-b
             border-border

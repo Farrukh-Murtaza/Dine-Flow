@@ -14,7 +14,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
         if (!getToken()) return;
         authApi
             .me()
-            .then((data) => setUser(data?.user ?? null))
+            .then((data) => {
+                console.log(data)
+                setUser(data?.user ?? null);
+            })
             .catch((err) => {
                 console.error("Could not restore session:", err);
             })
@@ -31,9 +34,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
     const login = useCallback(async (email: string, password: string) => {
         const data = await authApi.login({ email, password });
-        console.log("data", data);
-        console.log("data token", data.token);
-        console.log("data user", data.user);
         setToken(data.token);
         setUser(data.user);
         return data.user;

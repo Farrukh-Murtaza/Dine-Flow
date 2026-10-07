@@ -9,6 +9,7 @@ import Inventory from "./api/screens/Inventory";
 import Menu from "./api/screens/Menu";
 import { ProtectedRoute, RequireRole } from "./routes/ProtectedRoutes";
 import { useAuth } from "./context/auth-context/useAuth";
+import SettingsScreen from "./api/screens/Setting";
 
 function Guarded({ path, children }: { path: string; children: ReactNode }) {
   return <RequireRole roles={accessFor(path)}>{children}</RequireRole>;
@@ -40,7 +41,7 @@ export default function App() {
           <Route path="stock-history" element={<Guarded path="/stock-history"><Placeholder title="Stock History" /></Guarded>} />
           <Route path="reports" element={<Guarded path="/reports"><Placeholder title="Reports" /></Guarded>} />
           <Route path="staff" element={<Guarded path="/staff"><Placeholder title="Staff" /></Guarded>} />
-          <Route path="settings" element={<Guarded path="/settings"><Placeholder title="Settings" /></Guarded>} />
+          <Route path="settings" element={<Guarded path="/settings"><SettingsScreen /></Guarded>} />
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />

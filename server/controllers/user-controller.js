@@ -1,6 +1,6 @@
 const { ASSIGNABLE_ROLES, PASSWORD_RESET_ROLES, ROLES } = require("../constants/roles");
 const User = require("../models/user-model");
-
+const jwt  = require("jsonwebtoken");
 
 
 async function getAllUsers(req, res) {
@@ -154,7 +154,19 @@ async function resetPassword(req, res) {
 
     await targetUser.save();
 
+  if (targetUser._id.toString() === req.user._id.toString()) {
+  
+    const payload = { _id: targetUser._id, role: targetUser.role };
+   
+    const newToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+   
     return res.status(200).json({
+      message: "Password updated successfully.",
+      token: newToken
+    });
+  }
+
+   res.status(200).json({
       message: "Password updated successfully.",
     });
   } catch (error) {
