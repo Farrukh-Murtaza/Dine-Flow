@@ -2,6 +2,7 @@ import {
     AlertTriangle,
     BarChart3,
     Boxes,
+    CassetteTape,
     ClipboardList,
     History,
     LayoutDashboard,
@@ -25,6 +26,12 @@ export const navItems = [
         to: "/dashboard",
         label: "Dashboard",
         icon: LayoutDashboard,
+        access: [OWNER, MANAGER],
+    },
+    {
+        to: "/categories",
+        label: "Categories",
+        icon: CassetteTape,
         access: [OWNER, MANAGER],
     },
     {

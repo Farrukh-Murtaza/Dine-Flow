@@ -9,11 +9,9 @@ export interface User {
     password?: string;
     isActive: boolean
 }
-
-
-export interface LoginResponse {
-    message: string;
-    token: string;
-    user: User;
+export interface Category {
+    _id?: string;
+    name: string;
+    description: string;
+    displayOrder?: 0
 }
-

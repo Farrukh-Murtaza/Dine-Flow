@@ -11,6 +11,7 @@ import { ProtectedRoute, RequireRole } from "./routes/ProtectedRoutes";
 import { useAuth } from "./context/auth-context/useAuth";
 import SettingsScreen from "./api/screens/Setting";
 import Staff from "./api/screens/Staff";
+import CategoryScreen from "./api/screens/CategoryScreen";
 
 function Guarded({ path, children }: { path: string; children: ReactNode }) {
   return <RequireRole roles={accessFor(path)}>{children}</RequireRole>;
@@ -33,6 +34,7 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route index element={<HomeRedirect />} />
           <Route path="dashboard" element={<Guarded path="/dashboard"><Dashboard /></Guarded>} />
+          <Route path="categories" element={<Guarded path="/categories"><CategoryScreen /></Guarded>} />
           <Route path="menu" element={<Guarded path="/menu"><Menu /></Guarded>} />
           <Route path="inventory" element={<Guarded path="/inventory"><Inventory /></Guarded>} />
           <Route path="new-order" element={<Guarded path="/new-order"><Placeholder title="New Order" /></Guarded>} />

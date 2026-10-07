@@ -29,7 +29,6 @@ export default function AppLayout() {
         () => localStorage.getItem("dineflow_theme") === "dark"
     );
 
-    console.log(user)
     const items = navForRole(user?.role ?? "");
 
     const title =

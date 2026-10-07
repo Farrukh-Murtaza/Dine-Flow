@@ -36,12 +36,18 @@ client.interceptors.response.use(
 export const http = {
   get: <T>(url: string, config?: AxiosRequestConfig) =>
     client.get<T>(url, config).then((res) => res.data),
+
   post: <T>(url: string, body?: unknown, config?: AxiosRequestConfig) =>
     client.post<T>(url, body, config).then((res) => res.data),
+
   put: <T>(url: string, body?: unknown, config?: AxiosRequestConfig) =>
     client.put<T>(url, body, config).then((res) => res.data),
+
   patch: <T>(url: string, body?: unknown, config?: AxiosRequestConfig) =>
     client.patch<T>(url, body, config).then((res) => res.data),
+
+  delete: <T>(url: string, config?: AxiosRequestConfig) =>
+    client.delete<T>(url, config).then((res) => res.data),
 };
 
 export function getErrorMessage(error: unknown, fallback = "Something went wrong"): string {

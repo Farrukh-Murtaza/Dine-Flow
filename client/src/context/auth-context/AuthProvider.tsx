@@ -15,7 +15,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
         authApi
             .me()
             .then((data) => {
-                console.log(data)
                 setUser(data?.user ?? null);
             })
             .catch((err) => {

@@ -1,10 +1,17 @@
-import type { LoginResponse, User } from "../models";
+import type { User } from "../models";
 import { http } from "./client";
 
 export interface ChangePasswordPayload {
     currentPassword: string;
     newPassword: string;
 }
+
+export interface LoginResponse {
+    message: string;
+    token: string;
+    user: User;
+}
+
 
 export const authApi = {
     login: (credentials: { email: string, password: string }) => http.post<LoginResponse>("/auth/login", credentials), // -> { token, message }
