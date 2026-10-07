@@ -1,4 +1,3 @@
-// hooks/useFetch.ts
 import {
   useCallback,
   useEffect,
@@ -7,6 +6,7 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
+
 import { getErrorMessage } from "../api/client";
 
 export interface UseFetchResult<T> {
@@ -18,9 +18,33 @@ export interface UseFetchResult<T> {
 }
 
 /**
- * const { data, loading, error, refetch } = useFetch((signal) => api.list(signal), [dep]);
- * - re-runs when `deps` change or `refetch()` is called
- * - cancels the in-flight request on unmount / re-run
+ * Fetch data when the component mounts or when dependencies change.
+ *
+ * Example:
+ *
+ * const {
+ *   data,
+ *   loading,
+ *   error,
+ *   refetch,
+ * } = useFetch(
+ *   (signal) => staffApi.get(signal),
+ * );
+ *
+ * You can also provide dependencies:
+ *
+ * useFetch(
+ *   (signal) => staffApi.getByRestaurant(restaurantId, signal),
+ *   [restaurantId],
+ * );
+ *
+ * Features:
+ * - Automatically fetches on mount
+ * - Re-fetches when dependencies change
+ * - Supports manual refetch()
+ * - Cancels requests when the component unmounts
+ * - Prevents state updates after an aborted request
+ * - Keeps the latest fetcher without requiring it in the effect dependencies
  */
 export default function useFetch<T>(
   fetcher: (signal: AbortSignal) => Promise<T>,
@@ -29,37 +53,76 @@ export default function useFetch<T>(
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [tick, setTick] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  // always call the latest fetcher without making it an effect dependency
+  /*
+   * Keep the latest fetcher in a ref.
+   *
+   * This prevents the fetcher function itself from causing
+   * the effect to run repeatedly when it is recreated during
+   * a render.
+   */
   const fetcherRef = useRef(fetcher);
+
   useEffect(() => {
     fetcherRef.current = fetcher;
-  });
+  }, [fetcher]);
 
   useEffect(() => {
     const controller = new AbortController();
-    setLoading(true);
-    setError("");
 
-    fetcherRef
-      .current(controller.signal)
-      .then((result) => {
-        if (controller.signal.aborted) return;
+    async function executeFetch() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const result = await fetcherRef.current(
+          controller.signal,
+        );
+
+        if (controller.signal.aborted) {
+          return;
+        }
+
         setData(result);
-        setLoading(false);
-      })
-      .catch((err: unknown) => {
-        if (controller.signal.aborted) return;
+      } catch (err: unknown) {
+        if (controller.signal.aborted) {
+          return;
+        }
+
         setError(getErrorMessage(err));
-        setLoading(false);
-      });
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
 
-    return () => controller.abort();
+    void executeFetch();
+
+    return () => {
+      controller.abort();
+    };
+
+    /*
+     * `fetcher` is intentionally excluded because the latest
+     * version is stored in fetcherRef.
+     *
+     * refreshKey is included so refetch() triggers the request.
+     */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps, tick]);
+  }, [refreshKey, ...deps]);
 
-  const refetch = useCallback(() => setTick((t) => t + 1), []);
+  const refetch = useCallback(() => {
+    setRefreshKey((current) => current + 1);
+  }, []);
 
-  return { data, setData, loading, error, refetch };
+  return {
+    data,
+    setData,
+    loading,
+    error,
+    refetch,
+  };
 }
+

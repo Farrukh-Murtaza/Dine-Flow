@@ -92,82 +92,58 @@ async function createStaffUser(req, res) {
   }
 }
 
-async function resetPassword(req, res) {
+async function updateUser(req, res) {
   try {
-    const { newPassword, userId } = req.body;
+    const { id } = req.params;
+    const { username, email, password, role, isActive } = req.body;
 
-    if (!newPassword) {
-      return res.status(400).json({
-        message: "New password is required.",
-      });
-    }
+    const user = await User.findById(id);
 
-
-
-    //   CASHIER AND STOREKEEPER
-    //   They can ONLY reset their own password.
-    //   Ignore/reject any userId they send.
-
-    if (
-      req.user.role === ROLES.CASHIER||
-      req.user.role === ROLES.STOREKEEPER
-    ) {
-      if (userId && userId.toString() !== req.user._id.toString()) {
-        return res.status(403).json({
-          message: "You can only reset your own password.",
-        });
-      }
-    }
-
-    // If no userId is provided, user is resetting their own password
-    const targetUserId = userId || req.user._id;
-
-    const targetUser = await User.findById(targetUserId);
-
-    if (!targetUser) {
+    if (!user) {
       return res.status(404).json({
         message: "User not found.",
       });
     }
 
-    // Get roles this logged-in user is allowed to reset
-    const allowedRoles = PASSWORD_RESET_ROLES[req.user.role] || [];
-    
-
-    // Check whether target user's role can be reset
-    if (!allowedRoles.includes(targetUser.role)) {
-      return res.status(403).json({
-        message: `A ${req.user.role} cannot reset the password of a ${targetUser.role}.`,
-      });
+    if (username) {
+      user.username = username;
     }
 
-    // Check if new password is the same as the old password
-    const samePassword = await targetUser.isCorrectPassword(newPassword);
-
-    if (samePassword) {
-      return res.status(400).json({
-        message: "New password can't be the same as the current password.",
+    if (email && email !== user.email) {
+      const existingUser = await User.findOne({
+        email,
+        _id: { $ne: user._id },
       });
+
+      if (existingUser) {
+        return res.status(400).json({
+          message: "This email is already being used by another user.",
+        });
+      }
+
+      user.email = email;
     }
 
-    targetUser.password = newPassword;
+    if (password) {
+      user.password = password;
+    }
 
-    await targetUser.save();
+    if (role) {
+      user.role = role;
+    }
 
-  if (targetUser._id.toString() === req.user._id.toString()) {
-  
-    const payload = { _id: targetUser._id, role: targetUser.role };
-   
-    const newToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
-   
+    if (typeof isActive === "boolean") {
+      user.isActive = isActive;
+    }
+
+    await user.save();
+
+    const updatedUser = user.toObject();
+    delete updatedUser.password;
+
     return res.status(200).json({
-      message: "Password updated successfully.",
-      token: newToken
-    });
-  }
-
-   res.status(200).json({
-      message: "Password updated successfully.",
+      message: "User updated successfully.",
+      user: updatedUser,
     });
   } catch (error) {
     console.error(error);
@@ -178,47 +154,88 @@ async function resetPassword(req, res) {
   }
 }
 
-async function toggleStatus(req, res){
-    const actorRole = req.user.role; // The person making the request
-    const actorId = req.user._id.toString(); // The person's ID making the request
-    const targetUserId = req.params.id;
-    const { isActive } = req.body;
+async function resetPassword(req, res) {
+  try {
 
-    if (typeof isActive !== "boolean") {
-      return res.status(400).json({ message: "Bad Request. 'isActive' must be a boolean (true or false)." });
+    const { newPassword, currentPassword } = req.body;
+
+
+     const user = await User.findById(req.user._id);
+
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
     }
 
-
-    // Self-Protection Check: Prevent an owner (or anyone) from deactivating themselves
-    if (actorId === targetUserId) {
-      return res.status(400).json({ message: "Bad Request. You cannot deactivate your own account." });
+    if (!newPassword) {
+      return res.status(400).json({
+        message: "New password is required.",
+      });
     }
 
-    const targetUser = await User.findById(targetUserId);
-    if (!targetUser) {
-      return res.status(404).json({ message: "User not found." });
-    }
+    if (!currentPassword) {
+        return res.status(400).json({
+          message: "Current password is required.",
+        });
+      }
 
-    if (actorRole === "manager" && targetUser.role === "owner") {
-      return res.status(403).json({ message: "Forbidden. Managers cannot deactivate an owner's account." });
-    }
 
-    targetUser.isActive = isActive;
-    await targetUser.save(); 
 
-    const updatedUser = targetUser.toObject();
-    delete updatedUser.password;
+    const passwordMatches =
+        await user.isCorrectPassword(currentPassword);
 
-    const actionText = isActive ? "activated" : "deactivated";
-    res.status(200).json({ 
-      message: `User '${updatedUser.username}' has been ${actionText} successfully.`, 
-      user: updatedUser 
+
+    if (!passwordMatches) {
+        return res.status(400).json({
+          message: "Current password is incorrect.",
+        });
+      }
+
+      if (currentPassword === newPassword) {
+        return res.status(400).json({
+          message:
+            "New password can't be the same as the current password.",
+        });
+      }
+      
+    user.password = newPassword;
+
+    await user.save();
+
+    // Password changed, so issue a fresh token
+    const payload = {
+      _id: user._id,
+      role: user.role,
+    };
+
+    const newToken = jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      },
+    );
+
+    return res.status(200).json({
+      message: "Password updated successfully.",
+      token: newToken,
     });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Something went wrong.",
+    });
+  }
 }
+
+
 
 module.exports = {
     getAllUsers,
     createStaffUser,
+    updateUser,
     resetPassword,
-    toggleStatus
 }

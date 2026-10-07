@@ -10,6 +10,7 @@ import Menu from "./api/screens/Menu";
 import { ProtectedRoute, RequireRole } from "./routes/ProtectedRoutes";
 import { useAuth } from "./context/auth-context/useAuth";
 import SettingsScreen from "./api/screens/Setting";
+import Staff from "./api/screens/Staff";
 
 function Guarded({ path, children }: { path: string; children: ReactNode }) {
   return <RequireRole roles={accessFor(path)}>{children}</RequireRole>;
@@ -31,7 +32,7 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           <Route index element={<HomeRedirect />} />
-          <Route path="dashboard" element={<Guarded path="/"><Dashboard /></Guarded>} />
+          <Route path="dashboard" element={<Guarded path="/dashboard"><Dashboard /></Guarded>} />
           <Route path="menu" element={<Guarded path="/menu"><Menu /></Guarded>} />
           <Route path="inventory" element={<Guarded path="/inventory"><Inventory /></Guarded>} />
           <Route path="new-order" element={<Guarded path="/new-order"><Placeholder title="New Order" /></Guarded>} />
@@ -40,7 +41,7 @@ export default function App() {
           <Route path="low-stock" element={<Guarded path="/low-stock"><Placeholder title="Low Stock" /></Guarded>} />
           <Route path="stock-history" element={<Guarded path="/stock-history"><Placeholder title="Stock History" /></Guarded>} />
           <Route path="reports" element={<Guarded path="/reports"><Placeholder title="Reports" /></Guarded>} />
-          <Route path="staff" element={<Guarded path="/staff"><Placeholder title="Staff" /></Guarded>} />
+          <Route path="staff" element={<Guarded path="/staff"><Staff /></Guarded>} />
           <Route path="settings" element={<Guarded path="/settings"><SettingsScreen /></Guarded>} />
         </Route>
       </Route>

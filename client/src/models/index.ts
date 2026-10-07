@@ -2,10 +2,12 @@
 
 
 export interface User {
-    id: string;
+    _id?: string;
     username: string;
     email: string;
     role: "owner" | "manager" | "storekeeper" | "cashier";
+    password?: string;
+    isActive: boolean
 }
 
 

@@ -37,13 +37,13 @@ function RestaurantSettingsCard() {
         settingsApi.get(signal),
     );
 
-    console.log(data);
     const [form, setForm] = useState<RestaurantSettings>({ _id: "", name: "", address: "", phone: "" });
     const [saving, setSaving] = useState(false);
 
     // copy the server values into the form once they arrive
     useEffect(() => {
         if (data) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setForm({ _id: data._id, name: data.name ?? "", address: data.address ?? "", phone: data.phone ?? "" });
         }
     }, [data]);
