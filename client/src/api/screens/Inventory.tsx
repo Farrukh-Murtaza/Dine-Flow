@@ -1,6 +1,7 @@
 import { Boxes, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
-import { Card, Field, Modal } from "../../components/ui";
+import { Card, Field } from "../../components/ui";
+import { Modal } from "../../components/UI/Modal";
 
 interface InventoryItem {
   id: string;

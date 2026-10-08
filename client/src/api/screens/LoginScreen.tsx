@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Eye, EyeOff, Utensils } from "lucide-react";
-import { getErrorMessage } from "../api/client";
+import { getErrorMessage } from "../client";
 import { useLocation, useNavigate } from "react-router-dom";
-import { homePathFor } from "../config/navigation";
-import { useAuth } from "../context/auth-context/useAuth";
+import { homePathFor } from "../../config/navigation";
+import { useAuth } from "../../context/auth-context/useAuth";
 
 
 export default function LoginScreen() {

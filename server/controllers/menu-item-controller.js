@@ -4,7 +4,7 @@ const Category = require("../models/category-model");
 // CREATE: Add a new menu item
 async function createMenuItem(req, res) {
   try {
-    const { name, description, price, category, imageUrl } = req.body;
+    const { name, description, price, category, imageUrl, isAvailable } = req.body;
 
     // 1. Validate that the chosen category actually exists
     const categoryExists = await Category.findById(category);
@@ -17,7 +17,8 @@ async function createMenuItem(req, res) {
       description,
       price,
       category,
-      imageUrl
+      imageUrl,
+      isAvailable
     });
 
     await newItem.save();
@@ -39,7 +40,10 @@ async function getAllMenuItems(req, res) {
 
     // .populate("category", "name") pulls the category name into the response object
     const items = await MenuItem.find(queryFilter).populate("category", "name");
-    res.status(200).json(items);
+    res.status(200).json({
+      message: "All Menu Items",
+      items
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
@@ -62,7 +66,7 @@ async function getMenuItemById(req, res) {
 // UPDATE: Modify dish specifications
 async function updateMenuItem(req, res) {
   try {
-    const { name, description, price, category, imageUrl } = req.body;
+    const { name, description, price, category, imageUrl, isAvailable } = req.body;
 
     if (category) {
       const categoryExists = await Category.findById(category);
@@ -71,7 +75,7 @@ async function updateMenuItem(req, res) {
 
     const updatedItem = await MenuItem.findByIdAndUpdate(
       req.params.id,
-      { name, description, price, category, imageUrl },
+      { name, description, price, category, imageUrl , isAvailable},
       { new: true, runValidators: true }
     ).populate("category", "name");
 

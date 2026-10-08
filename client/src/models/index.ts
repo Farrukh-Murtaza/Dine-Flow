@@ -15,3 +15,13 @@ export interface Category {
     description: string;
     displayOrder?: 0
 }
+
+export interface MenuItem {
+    _id?: string;
+    name: string;
+    description: string;
+    category: Category;
+    price: number;
+    isAvailable: boolean;
+    imageUrl: string;
+}

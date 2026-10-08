@@ -1,8 +1,5 @@
 import {
-  Pencil,
   Plus,
-  Search,
-  Trash2,
   UserRound,
 } from "lucide-react";
 
@@ -12,12 +9,17 @@ import {
   type FormEvent,
 } from "react";
 
-import { Card, Field, Modal } from "../../components/ui";
+import { Card, Field } from "../../components/ui";
 import { useAuth } from "../../context/auth-context/useAuth";
 import useFetch from "../../context/useFetch";
 import type { User } from "../../models";
 import { staffApi } from "../staff";
 import { useToast } from "../../context/toast-context/useToast";
+import { StatusBadge } from "../../components/UI/StatusBadge";
+import { Modal } from "../../components/UI/Modal";
+import TableActions from "../../components/UI/TableActions";
+import { SearchInput } from "../../components/UI/SearchInput";
+import { PageHeader } from "../../components/UI/PageHeader";
 
 type Staff = User;
 
@@ -256,45 +258,29 @@ export default function Staff() {
   return (
     <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <p className="text-sm text-muted-foreground">
-            Restaurant Staff
-          </p>
-
-          <h2 className="mt-1 text-2xl font-bold">
-            Staff Management
-          </h2>
-        </div>
-
-        <button
-          type="button"
-          className="btn-primary"
-          onClick={openAddModal}
-        >
-          <Plus size={18} />
-          Add Staff
-        </button>
-      </div>
+      <PageHeader
+        title="Restaurant Staff"
+        eyebrow="Staff Management"
+        action={
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={openAddModal}
+          >
+            <Plus size={18} />
+            Add Staff
+          </button>
+        }
+      />
 
       {/* Search */}
       <Card className="p-4">
-        <div className="relative max-w-md">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-            size={18}
-          />
-
-          <input
-            type="search"
-            className="input pl-10"
-            placeholder="Search staff..."
-            value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
-          />
-        </div>
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder="Search staff..."
+          className="max-w-md"
+        />
       </Card>
 
       {/* Error */}
@@ -472,30 +458,13 @@ function StaffRow({
       </td>
 
       {/* Actions */}
-      <td className="px-6 py-4">
-        <div className="flex justify-end gap-2">
-          {/* Edit */}
-          <button
-            type="button"
-            className="btn-secondary px-3 py-2"
-            onClick={onEdit}
-            aria-label={`Edit ${staff.username}`}
-          >
-            <Pencil size={16} />
-          </button>
+      <TableActions
+        name={staff.username}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        deleting={deleting}
+      />
 
-          {/* Delete */}
-          <button
-            type="button"
-            className="btn-secondary px-3 py-2 text-danger hover:text-danger"
-            onClick={onDelete}
-            disabled={deleting}
-            aria-label={`Delete ${staff.username}`}
-          >
-            <Trash2 size={16} />
-          </button>
-        </div>
-      </td>
     </tr>
   );
 }
@@ -518,28 +487,7 @@ function RoleBadge({
   );
 }
 
-/*
- * --------------------------------------------------------------------------
- * Status Badge
- * --------------------------------------------------------------------------
- */
 
-function StatusBadge({
-  isActive,
-}: {
-  isActive?: boolean;
-}) {
-  return (
-    <span
-      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${isActive
-        ? "bg-success-bg text-success"
-        : "bg-danger-bg text-danger"
-        }`}
-    >
-      {isActive ? "Active" : "Inactive"}
-    </span>
-  );
-}
 
 /*
  * --------------------------------------------------------------------------

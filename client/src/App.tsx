@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
-import LoginScreen from "./components/LoginScreen";
-import NotFound from "./components/NotFound";
+import LoginScreen from "./api/screens/LoginScreen";
+import NotFound from "./api/screens/NotFound";
 import { accessFor, homePathFor } from "./config/navigation";
 import Dashboard from "./api/screens/Dashboard";
 import Inventory from "./api/screens/Inventory";
-import Menu from "./api/screens/Menu";
+import MenuScreen from "./api/screens/MenuScreen";
 import { ProtectedRoute, RequireRole } from "./routes/ProtectedRoutes";
 import { useAuth } from "./context/auth-context/useAuth";
 import SettingsScreen from "./api/screens/Setting";
@@ -35,7 +35,7 @@ export default function App() {
           <Route index element={<HomeRedirect />} />
           <Route path="dashboard" element={<Guarded path="/dashboard"><Dashboard /></Guarded>} />
           <Route path="categories" element={<Guarded path="/categories"><CategoryScreen /></Guarded>} />
-          <Route path="menu" element={<Guarded path="/menu"><Menu /></Guarded>} />
+          <Route path="menu" element={<Guarded path="/menu"><MenuScreen /></Guarded>} />
           <Route path="inventory" element={<Guarded path="/inventory"><Inventory /></Guarded>} />
           <Route path="new-order" element={<Guarded path="/new-order"><Placeholder title="New Order" /></Guarded>} />
           <Route path="orders" element={<Guarded path="/orders"><Placeholder title="Orders" /></Guarded>} />
