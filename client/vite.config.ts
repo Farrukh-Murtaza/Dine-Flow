@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      'api': {
+      '/api': {
         target: "https://dine-flow-1bfp.onrender.com/api",
         changeOrigin: true
       }
