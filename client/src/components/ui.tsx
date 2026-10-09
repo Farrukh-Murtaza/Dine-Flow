@@ -126,13 +126,11 @@ export function PageState({ loading, error, onRetry, children }: PageStateProps)
 
 
 interface ToastProps {
-    toast?: {
-        type: string,
-        message: string
-    }
+    type: string,
+    message: string
 }
 
-export function Toast({ toast }: ToastProps) {
+export function Toast(toast: ToastProps) {
     if (!toast) return null;
     const isError = toast.type === "error";
 

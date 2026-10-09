@@ -15,7 +15,7 @@ export interface LoginResponse {
 
 export const authApi = {
     login: (credentials: { email: string, password: string }) => http.post<LoginResponse>("/auth/login", credentials), // -> { token, message }
-    me: () => http.get<User>("/auth/me"), // -> user
+    me: () => http.get<LoginResponse>("/auth/me"), // -> user
     changePassword: (payload: ChangePasswordPayload) =>
         http.put<{ message: string, token: string }>("/users/reset-password", payload),
 };

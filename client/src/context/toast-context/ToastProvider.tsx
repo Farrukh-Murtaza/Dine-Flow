@@ -29,7 +29,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
     return (
         <ToastContext.Provider value={api}>
             {children}
-            <Toast toast={toast} />
+            {toast ? <Toast message={toast.message} type={toast.type} /> : null}
         </ToastContext.Provider>
     );
 }

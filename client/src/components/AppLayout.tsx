@@ -198,7 +198,7 @@ export default function AppLayout() {
 
                         <span className="hidden text-sm text-muted-foreground transition-colors 
                         hover:text-foreground hover:bg-muted sm:flex items-center justify-center border h-10 w-10 rounded-full cursor-pointer">
-                            {user?.username[0].toUpperCase()}
+                            {user?.username?.toUpperCase() || "U"}
                         </span>
 
 
