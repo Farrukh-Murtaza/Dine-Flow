@@ -1,12 +1,10 @@
 import {
-    AlertTriangle,
+
     BarChart3,
     Boxes,
     CassetteTape,
     ClipboardList,
-    History,
     LayoutDashboard,
-    PackagePlus,
     Settings,
     Users,
     Utensils,
@@ -58,24 +56,24 @@ export const navItems = [
         icon: Boxes,
         access: [OWNER, MANAGER, STOREKEEPER],
     },
-    {
-        to: "/stock-in",
-        label: "Stock In",
-        icon: PackagePlus,
-        access: [OWNER, MANAGER, STOREKEEPER],
-    },
-    {
-        to: "/low-stock",
-        label: "Low Stock",
-        icon: AlertTriangle,
-        access: [OWNER, MANAGER, STOREKEEPER],
-    },
-    {
-        to: "/stock-history",
-        label: "Stock History",
-        icon: History,
-        access: [OWNER, MANAGER, STOREKEEPER],
-    },
+    // {
+    //     to: "/stock-in",
+    //     label: "Stock In",
+    //     icon: PackagePlus,
+    //     access: [OWNER, MANAGER, STOREKEEPER],
+    // },
+    // {
+    //     to: "/low-stock",
+    //     label: "Low Stock",
+    //     icon: AlertTriangle,
+    //     access: [OWNER, MANAGER, STOREKEEPER],
+    // },
+    // {
+    //     to: "/stock-history",
+    //     label: "Stock History",
+    //     icon: History,
+    //     access: [OWNER, MANAGER, STOREKEEPER],
+    // },
     {
         to: "/reports",
         label: "Reports",

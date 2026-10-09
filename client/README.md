@@ -1,78 +1,110 @@
-# React + TypeScript + Vite
+# DineFlow Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend application for DineFlow, a restaurant management system built with React, TypeScript, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* Restaurant dashboard and navigation.
+* Order management with status filters.
+* Inventory management interface.
+* Reusable UI components and modal dialogs.
+* API communication using Axios.
+* Client-side navigation using React Router DOM.
+* Iconography using Lucide React.
 
-## React Compiler
+## Technology Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* React Router DOM
+* Axios
+* Lucide React
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+## Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* Node.js and npm.
+* The DineFlow backend running locally or deployed.
+* Access to a configured backend API.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 1. Install dependencies
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+From the repository root:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Alternatively, install client dependencies directly:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+cd client
+npm install
 ```
+
+### 2. Configure the API URL
+
+Create a `.env` file inside the `client` directory if your application uses a configurable API URL.
+
+Example:
+
+```env
+VITE_API_URL=http://localhost:5001/api
+```
+
+The variable name and URL must match the Axios configuration used in your application. Vite exposes client environment variables prefixed with `VITE_`, so never put private secrets in these variables.
+
+### 3. Start the development server
+
+From the repository root:
+
+```bash
+cd client
+npm run dev
+```
+
+Vite will print the local URL in your terminal. 
+
+```text
+http://localhost:3000
+```
+
+### 4. Build for production
+
+```bash
+npm run build
+```
+
+### 5. Run linting
+
+If the client package defines a lint script:
+
+```bash
+npm run lint
+```
+
+## API Integration
+
+The frontend communicates with the backend through HTTP requests. Axios is used for API calls, while the server is responsible for data persistence, validation, authentication, and authorization.
+
+The backend API URL should point to the running DineFlow server.
+
+## Development Notes
+
+* Keep reusable UI components in the appropriate shared components directory.
+* Keep feature-specific screens and API functions organized by feature.
+* Use environment variables for environment-specific configuration.
+* Handle API loading, error, empty, and success states.
+* Do not rely on frontend visibility rules as the only security mechanism.
+
+## Related Documentation
+
+* [Main Project README](../README.md)
+* [Backend README](../server/README.md)
+
+## Author
+
+Farrukh Murtaza — [GitHub](https://github.com/Farrukh-Murtaza)
