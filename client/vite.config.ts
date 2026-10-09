@@ -11,6 +11,12 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
   ],
   server: {
-    port: 3000
+    port: 3000,
+    proxy: {
+      'api': {
+        target: "https://dine-flow-1bfp.onrender.com",
+        changeOrigin: true
+      }
+    }
   }
 })
