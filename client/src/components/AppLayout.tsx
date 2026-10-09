@@ -65,27 +65,13 @@ export default function AppLayout() {
 
             {/* SIDEBAR */}
             <aside
-                className={`
-          fixed
-          inset-y-0
-          left-0
-          z-40
-          flex
-          w-72
-          flex-col
-          bg-sidebar
-          text-sidebar-foreground
-          shadow-xl
-          transition-transform
-
-          md:static
-          md:translate-x-0
-
-          ${mobileOpen
+                className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col 
+                    bg-sidebar text-sidebar-foreground shadow-xl transition-transform
+                    md:static md:translate-x-0
+                    ${mobileOpen
                         ? "translate-x-0"
                         : "-translate-x-full"
-                    }
-        `}
+                    }`}
             >
 
                 {/* Logo */}
@@ -160,45 +146,7 @@ export default function AppLayout() {
 
                 </nav>
 
-                {/* User section */}
-                <div className="border-t border-sidebar-foreground/10 p-4">
 
-                    <div className="mb-3 rounded-xl bg-sidebar-foreground/10 p-3">
-
-                        <p className="truncate text-sm font-semibold">
-                            {user?.username || "User"}
-                        </p>
-
-                        <p className="mt-1 text-xs capitalize text-sidebar-muted">
-                            {user?.role || "Unknown role"}
-                        </p>
-
-                    </div>
-
-                    <button
-                        onClick={signOut}
-                        className="
-              flex
-              w-full
-              items-center
-              gap-3
-              rounded-xl
-              px-4
-              py-3
-              text-sm
-              font-medium
-              text-sidebar-muted
-              transition
-              hover:bg-sidebar-foreground/10
-              hover:text-sidebar-foreground
-            "
-                    >
-                        <LogOut size={18} />
-
-                        Sign out
-                    </button>
-
-                </div>
 
             </aside>
 
@@ -207,20 +155,8 @@ export default function AppLayout() {
 
                 {/* HEADER */}
                 <header
-                    className="
-            sticky
-            top-0
-            z-20
-            flex
-            h-21.25
-            items-center
-            border-b
-            border-border
-            bg-surface/95
-            px-5
-            backdrop-blur
-            md:px-8
-          "
+                    className="sticky top-0 z-20 flex h-21.25 items-center border-b border-border
+                    bg-surface/95 px-5 backdrop-blur md:px-8"
                 >
 
                     {/* Mobile menu */}
@@ -248,10 +184,6 @@ export default function AppLayout() {
                     {/* Header right */}
                     <div className="ml-auto flex items-center gap-3">
 
-                        <span className="hidden text-sm text-muted-foreground sm:block">
-                            {user?.username}
-                        </span>
-
                         <button
                             onClick={() => setDark((value) => !value)}
                             aria-label="Toggle dark mode"
@@ -262,6 +194,19 @@ export default function AppLayout() {
                             ) : (
                                 <Moon size={18} />
                             )}
+                        </button>
+
+                        <span className="hidden text-sm text-muted-foreground transition-colors 
+                        hover:text-foreground hover:bg-muted sm:flex items-center justify-center border h-10 w-10 rounded-full cursor-pointer">
+                            {user?.username[0].toUpperCase()}
+                        </span>
+
+
+                        <button
+                            onClick={signOut}
+                            aria-label="Toggle dark mode"
+                            className="rounded-xl p-2 text-muted-foreground hover:bg-surface-muted"
+                        >  <LogOut size={18} />
                         </button>
 
                     </div>

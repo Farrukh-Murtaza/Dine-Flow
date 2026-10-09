@@ -12,6 +12,8 @@ import { useAuth } from "./context/auth-context/useAuth";
 import SettingsScreen from "./api/screens/Setting";
 import Staff from "./api/screens/Staff";
 import CategoryScreen from "./api/screens/CategoryScreen";
+import OrderScreen from "./api/screens/OrderScreen";
+import AllOrdersScreen from "./api/screens/AllOrderScreen";
 
 function Guarded({ path, children }: { path: string; children: ReactNode }) {
   return <RequireRole roles={accessFor(path)}>{children}</RequireRole>;
@@ -36,9 +38,9 @@ export default function App() {
           <Route path="dashboard" element={<Guarded path="/dashboard"><Dashboard /></Guarded>} />
           <Route path="categories" element={<Guarded path="/categories"><CategoryScreen /></Guarded>} />
           <Route path="menu" element={<Guarded path="/menu"><MenuScreen /></Guarded>} />
+          <Route path="new-order" element={<Guarded path="/new-order"><OrderScreen /></Guarded>} />
           <Route path="inventory" element={<Guarded path="/inventory"><Inventory /></Guarded>} />
-          <Route path="new-order" element={<Guarded path="/new-order"><Placeholder title="New Order" /></Guarded>} />
-          <Route path="orders" element={<Guarded path="/orders"><Placeholder title="Orders" /></Guarded>} />
+          <Route path="orders" element={<Guarded path="/orders"><AllOrdersScreen /></Guarded>} />
           <Route path="stock-in" element={<Guarded path="/stock-in"><Placeholder title="Stock In" /></Guarded>} />
           <Route path="low-stock" element={<Guarded path="/low-stock"><Placeholder title="Low Stock" /></Guarded>} />
           <Route path="stock-history" element={<Guarded path="/stock-history"><Placeholder title="Stock History" /></Guarded>} />

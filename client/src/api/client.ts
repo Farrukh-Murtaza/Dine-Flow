@@ -28,7 +28,7 @@ client.interceptors.response.use(
       clearToken();
       window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
     }
-    return Promise.reject(error);
+    return Promise.reject(error.response?.data);
   },
 );
 

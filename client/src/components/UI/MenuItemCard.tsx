@@ -25,6 +25,10 @@ export default function MenuItemCard({
                     <img
                         src={menuItem.imageUrl}
                         alt={menuItem.name}
+                        onError={(event) => {
+                            event.currentTarget.style.display = "none";
+                            event.currentTarget.nextElementSibling?.classList.remove("hidden");
+                        }}
                         className="h-full w-full object-cover"
                     />
                 ) : (

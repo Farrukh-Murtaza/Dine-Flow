@@ -38,7 +38,7 @@ export const navItems = [
         to: "/menu",
         label: "Menu",
         icon: Utensils,
-        access: [OWNER, MANAGER, CASHIER],
+        access: [OWNER, MANAGER],
     },
     {
         to: "/new-order",

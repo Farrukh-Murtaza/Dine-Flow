@@ -1,6 +1,6 @@
 import {
-  Plus,
-  UserRound,
+  CassetteTape,
+  Plus
 } from "lucide-react";
 
 import {
@@ -265,8 +265,12 @@ export default function CategoryScreen() {
           <table className="w-full min-w-190 text-left text-sm">
             <thead className="bg-surface-muted text-muted-foreground">
               <tr>
+
                 <th className="px-6 py-4 font-medium">
                   Name
+                </th>
+                <th className="px-6 py-4 font-medium">
+                  Display Order
                 </th>
 
                 <th className="px-6 py-4 font-medium">
@@ -321,7 +325,7 @@ export default function CategoryScreen() {
                       className="px-6 py-12 text-center"
                     >
                       <div className="flex flex-col items-center">
-                        <UserRound
+                        <CassetteTape
                           size={36}
                           className="text-muted-foreground"
                         />
@@ -376,11 +380,10 @@ function CategoryRow({
 }) {
   return (
     <tr className="border-t border-border">
-      {/* Username */}
       <td className="px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <UserRound size={18} />
+            <CassetteTape size={18} />
           </div>
 
           <span className="font-semibold">
@@ -388,8 +391,12 @@ function CategoryRow({
           </span>
         </div>
       </td>
+      {/* description */}
+      <td className="px-6 py-4 text-muted-foreground">
+        {Category.displayOrder}
+      </td>
 
-      {/* Email */}
+      {/* description */}
       <td className="px-6 py-4 text-muted-foreground">
         {Category.description}
       </td>
