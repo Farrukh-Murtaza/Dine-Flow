@@ -31,7 +31,6 @@ export default function LoginScreen() {
         setSubmitting(true);
 
         try {
-            console.log(formData)
             const signedIn = await login(formData.email, formData.password);
             const from = location.state?.from?.pathname;
             navigate(from && from !== "/login" ? from : homePathFor(signedIn.role), { replace: true });
