@@ -10,9 +10,21 @@ const URL = process.env.URL ;
 const PORT = process.env.PORT || 5000;
 const routes = require("./routes/routes");
 
+const vercelPreview = /^https:\/\/dine-flow-[a-z0-9]+-farrukh-murtazas-projects\.vercel\.app$/;
+
+
 const corsOptions = {
-  origin: process.env.CLIENT_URL,
-  optionsSuccessStatus: 200 
+ origin: (origin, cb) => {
+      // allow non-browser requests (curl, Postman) with no Origin header
+      if (!origin) return cb(null, true);
+      if (allowedOrigins.includes(origin) || vercelPreview.test(origin)) {
+        return cb(null, true);
+      }
+      return cb(new Error(`CORS blocked: ${origin}`));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
