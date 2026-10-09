@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 const routes = require("./routes/routes");
 
 const allowedOrigins = [
-  "https://dine-flow-3ykgw5123-farrukh-murtazas-projects.vercel.app",
+  "https://dine-flow-neon.vercel.app/",
   'http://localhost:3000',                        // Keep localhost for local developmentr Vite users
 ];
 
