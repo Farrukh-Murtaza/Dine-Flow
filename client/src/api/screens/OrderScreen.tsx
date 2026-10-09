@@ -183,27 +183,12 @@ export default function OrderScreen() {
             setOrderItems([]);
             setTableNumber("");
             toast.success("Order placed successfully.");
-        } catch (error: unknown) {
-            const errorMessage =
-                error instanceof Error ? error.message : "Failed to place order.";
-            toast.error(errorMessage);
-            // toast.error(error.message);
-            // alert(
-            //     error instanceof Error ? error.message : "Failed to place order.",
-            // );
+        } catch (error) {
+            const message = error instanceof Error
+                ? error.message
+                : "Failed to place order.";
+            toast.error(message);
         }
-
-
-        // //   Load the order into orderItems / tableNumber, then call:
-
-        // orderApi.update(orderId, {
-        //     tableNumber: tableNumber.trim(),
-        //     items: orderItems.map((item) => ({
-        //         menuItem: item.menuItem._id as string,
-        //         quantity: item.quantity,
-        //     })),
-        // });
-
     };
 
     return (

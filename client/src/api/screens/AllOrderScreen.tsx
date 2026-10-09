@@ -1,11 +1,12 @@
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import type { OrderStatus } from "../../models/order";
 import useFetch from "../../context/useFetch";
 import { orderApi } from "../order-api";
 import type { OrderListResponse } from "../order-api";
 import { Link } from "react-router-dom";
+import { useToast } from "../../context/toast-context/useToast";
 
 const statusStyles: Record<OrderStatus, string> = {
     pending: "bg-amber-100 text-amber-700",
@@ -28,17 +29,31 @@ const nextAction: Record<OrderStatus, { label: string; next?: OrderStatus }> = {
 
 export default function AllOrderScreen() {
     const [updatingId, setUpdatingId] = useState<string | null>(null);
+    const [selectedStatus, setSelectedStatus] = useState<"all" | OrderStatus>("pending");
+    const toast = useToast();
 
     const { data, loading, error, refetch } = useFetch<OrderListResponse>(
         (signal) => orderApi.get({ limit: 100 }, signal),
     );
 
-    const orders = data?.orders ?? [];
+
+
+    const filteredOrders = useMemo(() => {
+        const orders = data?.orders ?? [];
+        if (selectedStatus === "all") {
+            return orders;
+        }
+
+        return orders.filter(
+            (order) => order.status === selectedStatus,
+        );
+    }, [data?.orders, selectedStatus]);
 
     const changeStatus = async (id: string, status: OrderStatus) => {
         setUpdatingId(id);
         try {
             await orderApi.update(id, { status });
+            toast.success("Order status updated successfully.")
             await refetch();
         } catch (err) {
             alert(
@@ -68,6 +83,32 @@ export default function AllOrderScreen() {
                 </Link>
             </div>
 
+            {/* Order Status Filters */}
+            <div className="mb-5 overflow-x-auto">
+                <div className="flex w-max gap-2">
+                    {[
+                        { value: "pending", label: "Pending" },
+                        { value: "served", label: "Served" },
+                        { value: "completed", label: "Completed" },
+                        { value: "all", label: "All Orders" },
+                    ].map((filter) => (
+                        <button
+                            key={filter.value}
+                            type="button"
+                            onClick={() =>
+                                setSelectedStatus(filter.value as "pending" | OrderStatus)
+                            }
+                            className={`shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition ${selectedStatus === filter.value
+                                ? "bg-primary text-white"
+                                : "border border-border bg-surface text-muted-foreground hover:bg-surface-muted"
+                                }`}
+                        >
+                            {filter.label}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             <div className="overflow-auto">
                 {loading ? (
                     <p className="py-8 text-center text-sm text-slate-400">
@@ -84,9 +125,11 @@ export default function AllOrderScreen() {
                             Retry
                         </button>
                     </div>
-                ) : orders.length === 0 ? (
+                ) : filteredOrders.length === 0 ? (
                     <p className="py-8 text-center text-sm text-slate-400">
-                        No orders yet.
+                        {selectedStatus === "pending"
+                            ? "No orders yet."
+                            : `No ${selectedStatus} orders found.`}
                     </p>
                 ) : (
                     <table className="w-full text-sm">
@@ -103,7 +146,7 @@ export default function AllOrderScreen() {
                         </thead>
 
                         <tbody>
-                            {orders.map((order) => {
+                            {filteredOrders.map((order) => {
                                 const action = nextAction[order.status];
                                 const itemCount = order.items.reduce(
                                     (sum, item) => sum + item.quantity,

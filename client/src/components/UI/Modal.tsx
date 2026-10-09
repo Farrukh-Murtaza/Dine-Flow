@@ -17,8 +17,12 @@ export function Modal({ title, onClose, children }: ModalProps) {
     }, [onClose]);
 
     return (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4">
-            <div className="w-full max-w-md rounded-2xl bg-surface p-6 shadow-xl">
+        <div
+            onClick={onClose}
+            className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4">
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-full max-w-md rounded-2xl bg-surface p-6 shadow-xl">
                 <div className="mb-5 flex items-center justify-between">
                     <h3 className="text-lg font-bold">{title}</h3>
                     <button onClick={onClose} aria-label="Close">

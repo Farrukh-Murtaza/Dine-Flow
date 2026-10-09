@@ -36,8 +36,9 @@ createOrder = async (req, res) => {
       return res.status(400).json({ message: "items are required" });
     }
 
-    const tableReserver = Order.findOne({tableNmber: tableNumber, status : "pending"});
-    if(tableReserver){
+    const tableReserved =await  Order.findOne({tableNumber, status : "pending"});
+
+    if(tableReserved){
       return res.status(400).json({message: `Table NO.:${tableNumber} is already taken. Please choose another table`})
     }
 
@@ -49,6 +50,7 @@ createOrder = async (req, res) => {
       items: orderItems,
       total: calcTotal(orderItems),
     }; 
+
     const order = await Order.create(orderFields);
 
     res.status(201).json(order);
