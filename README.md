@@ -17,7 +17,7 @@ The project is being developed as a practical full-stack application using React
 
 | Dashboard | Category |
 | --- | --- |
-| ![Dashboard](/client/src/assets/screenshots/dashboard.png) | ![Category](/client/src/assets/screenshots/category.pngå) |
+| ![Dashboard](/client/src/assets/screenshots/dashboard.png) | ![Category](/client/src/assets/screenshots/category.png) |
 
 | Menu | New Order |
 | --- | --- |
@@ -25,7 +25,7 @@ The project is being developed as a practical full-stack application using React
 
 | Order | Inventory |
 | --- | --- |
-| ![Dashboard](/client/src/assets/screenshots/orders.png) | ![Inventory](/client/src/assets/screenshots/inventory.png) |
+| ![Dashboard](/client/src/assets/screenshots/order.png) | ![Inventory](/client/src/assets/screenshots/inventory.png) |
 
 | Staff | Settings |
 | --- | --- |
